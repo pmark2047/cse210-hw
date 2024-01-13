@@ -17,23 +17,23 @@ class Program
 
         if (grade >= 90)
         {
-            string letter = "A";
+            letter = "A";
         }
         else if (grade >=80)
         {
-            string letter = "B";
+            letter = "B";
         }
         else if (grade >= 70)
         {
-            string letter = "C";
+            letter = "C";
         }
         else if (grade >= 60)
         {
-            string letter = "D";
+            letter = "D";
         }
         else
         {
-            string letter = "F";
+            letter = "F";
         }
 
         if (letter == "A" || letter == "B" || letter == "C")
