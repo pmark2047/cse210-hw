@@ -6,7 +6,7 @@ class Program
 {
     static void Main(string[] args)
     {
-        Console.Write("Please give a positive integer: ");
+        Console.Write("\nPlease give a positive integer: ");
 
         int maxInt = int.Parse(Console.ReadLine());
 
@@ -14,24 +14,36 @@ class Program
 
         Random randomGenerator = new Random();
         int answer = randomGenerator.Next(1, maxInt);
-
+        Console.WriteLine();
         do
         {
             Console.Write($"Pick a number between 1 and {maxInt}: ");
 
             guess = float.Parse(Console.ReadLine());
 
-            if (guess < answer)
+            if (guess == (answer - 1) || guess == (answer + 1))
             {
-                Console.WriteLine("     Too low!");
+                Console.WriteLine("     Burning Hot!!!");
+            }
+            else if ((guess <= (answer - 2) && guess > (answer - 3)) || guess >= (answer + 2) && guess < (answer + 3))
+            {
+                Console.WriteLine("     Hot!");
+            }
+            else if ((guess <= (answer - 3) && guess > (answer - 4)) || guess >= (answer + 3) && guess < (answer + 4))
+            {
+                Console.WriteLine("     Warmer!");
+            }
+            else if (guess == answer)
+            {
+                Console.Write("     Correct!");
+            }
+            else if (guess < answer)
+            {
+                Console.WriteLine("     Colder (Higher)");
             }
             else if (guess > answer)
             {
-                Console.WriteLine("     Too high!");
-            }
-            else
-            {
-                Console.Write("     Correct!");
+                Console.WriteLine("     Colder (Lower)");
             }
 
         } while (guess != answer);
