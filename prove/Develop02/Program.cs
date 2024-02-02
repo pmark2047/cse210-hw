@@ -14,9 +14,13 @@ class Program
     {
         List<string> prompts = new List<string>
         {
-            "What was the best part of your day?",
-            "What did you accomplish today?",
-            "Who did you talk to today?"
+            "What was the best part of my day?",
+            "What did I accomplish today?",
+            "Who was the most interesting person I interacted with today?",
+            "How did I see the hand of the Lord in my life today?",
+            "What was the strongest emotion I felt today?",
+            "If I had one thing I could do over today, what would it be?",
+            "What am I most grateful for today?"
         };
         Random Random = new Random();
         var randIndex = Random.Next(prompts.Count);
