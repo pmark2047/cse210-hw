@@ -1,14 +1,10 @@
 using System;
-using System.Runtime.InteropServices;
 public class Reference {
 
     public string book;
-
     public int chap;
     public int startVerse;
-
     public int endVerse;
-
     public string BuildReference(string book, int chap, int startVerse, int endVerse)
     {
         return $"{book} {chap}:{startVerse}-{endVerse}";
@@ -40,12 +36,16 @@ public class Reference {
         }
     }
 
-    public void DisplayReference()
+    public string ReturnReference()
     {
-        Console.WriteLine(book);
-        Console.WriteLine(chap);
-        Console.WriteLine(startVerse);
-        Console.WriteLine(endVerse);
+        if (endVerse == 0)
+        {
+            return $"{book} {chap}:{startVerse} ";
+        }
+        else
+        {
+            return $"{book} {chap}:{startVerse}-{endVerse} ";
+        }
     }
 
 
