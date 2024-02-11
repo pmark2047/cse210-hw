@@ -1,3 +1,5 @@
+using Microsoft.VisualBasic;
+
 public class Word {
 
     public string word;
