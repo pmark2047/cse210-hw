@@ -11,6 +11,8 @@ class Program
 
         string script = "John 3:16 For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life.";
 
+        //string script = "Alma 12:27 But behold, it was not so; but it was appointed unto men that they must die; and after death, they must come to judgment, even that same judgment of which we have spoken, which is the end.";
+        
         scripture.scripture = script;
 
         Console.Clear();

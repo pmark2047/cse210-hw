@@ -1,10 +1,10 @@
 using System;
 public class Reference {
 
-    public string book;
-    public int chap;
-    public int startVerse;
-    public int endVerse;
+    private string book;
+    private int chap;
+    private int startVerse;
+    private int endVerse;
     public string BuildReference(string book, int chap, int startVerse, int endVerse)
     {
         return $"{book} {chap}:{startVerse}-{endVerse}";
