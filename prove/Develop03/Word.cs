@@ -7,14 +7,18 @@ public class Word {
     public void Hide()
     {
         string blank = "";
-        foreach (char a in word)
+
+        if (!word.Contains("\n"))
         {
-            if (!char.IsPunctuation(a))
-                {blank += "_";}
-            else
-                {blank += a;}
+            foreach (char a in word)
+            {
+                if (!char.IsPunctuation(a))
+                    {blank += "_";}
+                else
+                    {blank += a;}
+            }
+            word = blank;
         }
-        word = blank;
     }
 
 }

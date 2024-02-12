@@ -19,6 +19,7 @@ public class Scripture {
 
     public void DisplayVerses()
     {
+        int spaceControl = 0;
         var parts = scripture.Split(" ");
         for (int i = 2; i < parts.Count(); i++)
         {
@@ -27,12 +28,21 @@ public class Scripture {
             wordCount.Add(i-2);
             words.Add(word);
             Console.Write($"{parts[i]} ");
+
+            spaceControl += 1;
+            if (spaceControl == 8)
+            {
+                Console.WriteLine();
+                spaceControl = 0;
+            }
+            
         }
     }
 
     public void DisplayHide()
     {
         Random rnd = new Random();
+        int spaceControl = 0;
 
         if (wordCount.Count() > 10)
         {
@@ -64,6 +74,13 @@ public class Scripture {
         foreach (Word word in words)
         {
             Console.Write($"{word.word} ");
+
+            spaceControl += 1;
+            if (spaceControl == 8)
+            {
+                Console.WriteLine();
+                spaceControl = 0;
+            }
         }
     }
 
