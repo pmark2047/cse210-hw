@@ -212,7 +212,7 @@ class Program
         int index = 0;
         List<Food> found = new List<Food>();
         while (index < list.Count()){
-            if (list[index].name.Contains(keyword)){
+            if (list[index].name.ToLower().Contains(keyword.ToLower())){
                 found.Add(list[index]);
             }
             index += 1;
