@@ -7,7 +7,7 @@ class Program
         Diet diet = new Diet();
         FileManager file = new FileManager();
         List<object> foods = new List<object>();
-        List<object> recipies = new List<object>();
+        List<object> recipes = new List<object>();
         List<Food> daily = new List<Food>();
         List<double> totals = new List<double>(){
             0, //calories
@@ -44,11 +44,14 @@ class Program
                                 Food food = new Food();
                                 food.Make();
                                 foods.Add(food);
-                            }else{
+                            }else if (choice != 1 && foods.Count() > 0){
                                 Recipe recipe = new Recipe();
                                 recipe.MakeRecipe(foods);
                                 recipe.CalculateMacros();
-                                recipies.Add(recipe);
+                                recipes.Add(recipe);
+                            }else{
+                                Console.WriteLine("No recipes can be created until you first create a food to add. ");
+                                Thread.Sleep(3000);
                             }
                             loop = false;
                         }else{
@@ -57,7 +60,7 @@ class Program
                         Console.Clear();
                     }
                     loop = true;
-                }else if (choice == 2){
+                }else if (choice == 2) {
                     Console.Clear();
                     while(loop){
                         Console.WriteLine("    What would you like to report? ");
@@ -116,11 +119,11 @@ class Program
 
                             }else{
                                 List<object> found = new List<object>();
-                                while (loop && recipies.Count() > 0){
+                                while (loop && recipes.Count() > 0){
                                     Console.WriteLine("    Enter the list number of what you ate or search within the list");
                                     bool fromFound = false;
                                     if (found.Count() == 0){
-                                        DisplayFoods(recipies);
+                                        DisplayFoods(recipes);
                                         fromFound = false;
                                     }else{
                                         DisplayFoods(found);
@@ -128,7 +131,7 @@ class Program
                                     }
                                     string keyword = Console.ReadLine();
                                     bool isInt = int.TryParse(keyword, out choice);
-                                    if (isInt && 0 < choice && choice <= recipies.Count()){
+                                    if (isInt && 0 < choice && choice <= recipes.Count()){
                                         if (fromFound){
                                             Recipe recipe = new Recipe();
                                             recipe.Import(((Recipe)found[choice-1]).Export());
@@ -138,7 +141,7 @@ class Program
                                             daily.Add(recipe);
                                         }else{
                                             Recipe recipe = new Recipe();
-                                            recipe.Import(((Recipe)recipies[choice-1]).Export());
+                                            recipe.Import(((Recipe)recipes[choice-1]).Export());
                                             recipe.CalculateMacros();
                                             recipe.AddFood();
                                             recipe.name += daily.Count()+1;
@@ -146,18 +149,18 @@ class Program
                                         }
                                         loop = false;
                                     }else if (!isInt){
-                                        found = Search(recipies, keyword);
+                                        found = Search(recipes, keyword);
                                         if (found.Count() == 0){
                                             Console.Clear();
-                                            Console.WriteLine($"\n     No recipies found under the search word {keyword}.");
+                                            Console.WriteLine($"\n     No recipes found under the search word {keyword}.");
                                         }
                                     }else{
                                         Console.WriteLine("Invalid Selection. ");
                                     }
                                 }
-                                if (recipies.Count == 0){
+                                if (recipes.Count == 0){
                                     Console.Clear();
-                                    Console.WriteLine("There are no recipies to report, please add a recipe or load a profile. ");
+                                    Console.WriteLine("There are no recipes to report, please add a recipe or load a profile. ");
                                     Thread.Sleep(3000);
                                 }else{
                                     Recipe recipe = new Recipe();
@@ -172,14 +175,18 @@ class Program
                     loop = true;
                 }else if (choice == 3){
                     Console.Clear();
-                    if (foods.Count() > 0 || recipies.Count() > 0){
+                    if (foods.Count() > 0 || recipes.Count() > 0){
                         Console.WriteLine("\nFoods: ");
                         DisplayFoods(foods);
                         Console.WriteLine("\nRecipes: ");
-                        DisplayFoods(recipies);
+                        if (recipes.Count() > 0){
+                            DisplayFoods(recipes);
+                        }else{
+                            Console.WriteLine("No recipes created");
+                        }
                         Console.WriteLine("\n\n");
                     }else{
-                        Console.WriteLine("There are no foods or recipies. Please create a new food or recipe. \n");
+                        Console.WriteLine("There are no foods or recipes. Please create a new food or recipe. \n");
                     }
                 }else if (choice == 4){
                     Console.Clear();
@@ -251,12 +258,12 @@ class Program
                     loop = true;
                     Console.Clear();
                 }else if (choice == 5){
-                    file.Save(diet, foods, recipies);
+                    file.Save(diet, foods, recipes);
                     Console.Clear();
                 }else if (choice == 6){
                     foods.Clear();
                     daily.Clear();
-                    (diet, foods, recipies) = file.Load(diet);
+                    (diet, foods, recipes) = file.Load(diet);
                     Console.Clear();
                 }else{
                     loop = false;
