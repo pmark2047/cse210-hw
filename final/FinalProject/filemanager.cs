@@ -3,7 +3,7 @@
 using System.IO.Enumeration;
 
 public class FileManager{
-    public void Save(Diet diet, List<Food> foods){
+    public void Save(Diet diet, List<Food> foods, List<Food>recipes){
         Console.WriteLine("What would you like to name the file? ");
         string filename = Console.ReadLine()+".txt";
         using (StreamWriter writer = new StreamWriter(filename))
@@ -11,6 +11,9 @@ public class FileManager{
             writer.WriteLine(diet.Export());
             foreach(Food food in foods){
                 writer.WriteLine(food.Export());
+            }
+            foreach(Recipe recipe in recipes){
+                writer.WriteLine(recipe.Export());
             }
         }
     }

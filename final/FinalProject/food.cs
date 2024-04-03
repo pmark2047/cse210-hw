@@ -3,6 +3,8 @@ public class Food{
     public double carbs;
     public double protein;
     public double fat;
+
+    public double caloriesPerServing;
     public double servings = 1;
 
     public virtual string Export(){
@@ -15,6 +17,7 @@ public class Food{
         this.protein = double.Parse(parts[2]);
         this.fat = double.Parse(parts[3]);
         this.servings = double.Parse(parts[4]);
+        Calories();
     }
     public virtual void Make(){
         Console.Write("Name: ");
@@ -44,6 +47,7 @@ public class Food{
                 Console.WriteLine("Invalid entry, please enter the grams of fat per serving.");
             }
         }
+        Calories();
     }
     public virtual void AddFood(){
         bool loop = true;
@@ -55,5 +59,8 @@ public class Food{
                 Console.WriteLine("Invalid entry, please enter the number of servings you ate.");
             }
         }
+    }
+    public virtual void Calories(){
+        this.caloriesPerServing = this.carbs*4 + this.protein*4 + this.fat*9;
     }
 }

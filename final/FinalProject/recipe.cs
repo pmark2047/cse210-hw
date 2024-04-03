@@ -17,9 +17,9 @@ public class Recipe: Food{
         }
     }
     public override string Export(){
-        string export = $"{this.name}";
+        string export = $"{this.GetType().Name}|{this.name}|";
         foreach (Food food in foods){
-            export += $"\n{food.Export()}";
+            export += $"{food.Export()}";
         }
         return export;
     }
@@ -27,40 +27,44 @@ public class Recipe: Food{
     {
         Console.Write("Name of Recipe: ");
         this.name = Console.ReadLine();
-        Console.WriteLine("What foods would you like to add to your recipe?");
-        Console.WriteLine("Press 'd' when you are done adding foods.");
-        List<Food> found = new List<Food>();
-        bool loop = true;
-        while (loop){
+        bool finished = false;
+        while (!finished){
+            Console.WriteLine("What foods would you like to add to your recipe?");
+            Console.WriteLine("Press 'd' when you are done adding foods.");
+            List<Food> found = new List<Food>();
             Console.WriteLine("    Enter the list number of the food");
-                if (found.Count() == 0){
-                    DisplayFoods(inventory);
-                }else{
-                    DisplayFoods(found);
-                }
-                string keyword = Console.ReadLine();
-                bool isInt = int.TryParse(keyword, out int choice);
-                if (isInt && 0 < choice && choice <= inventory.Count()){
-                    inventory[choice-1].AddFood();
-                    this.foods.Add(inventory[choice-1]);
-                    loop = false;
-                }else if (!isInt){
-                    found = Search(inventory, keyword);
-                    if (found.Count() == 0){
-                        Console.Clear();
-                        Console.WriteLine($"\n     No foods found under the search word {keyword}.");
-                    }
-                }else{
-                    Console.WriteLine("Invalid Selection. ");
-                }
+            if (found.Count() == 0){
+                DisplayFoods(inventory);
+            }else{
+                DisplayFoods(found);
             }
-            loop = true;
+            string keyword = Console.ReadLine();
+            bool isInt = int.TryParse(keyword, out int choice);
+            if (isInt && 0 < choice && choice <= inventory.Count()){
+                inventory[choice-1].AddFood();
+                this.foods.Add(inventory[choice-1]);
+                Console.Clear();
+            }else if (!isInt){
+                found = Search(inventory, keyword);
+                if (found.Count() == 0){
+                    Console.Clear();
+                    Console.WriteLine($"\n     No foods found under the search word {keyword}.");
+                }
+                if (keyword.ToLower() == "d"){
+                    finished = true;
+                    Console.Clear();
+                }
+            }else{
+                Console.Clear();
+                Console.WriteLine("Invalid Selection. ");
+            }
+        }
     }
     public static List<Food> Search(List<Food> list, string keyword){
         int index = 0;
         List<Food> found = new List<Food>();
         while (index < list.Count()){
-            if (list[index].name.Contains(keyword)){
+            if (list[index].name.ToLower().Contains(keyword.ToLower())){
                 found.Add(list[index]);
             }
             index += 1;
@@ -85,5 +89,6 @@ public class Recipe: Food{
             this.protein += food.protein;
             this.fat += food.fat;
         }
+        Calories();
     }
 }
