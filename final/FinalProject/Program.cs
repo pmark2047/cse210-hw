@@ -6,8 +6,8 @@ class Program
     {
         Diet diet = new Diet();
         FileManager file = new FileManager();
-        List<Food> foods = new List<Food>();
-        List<Food> recipes = new List<Food>();
+        List<object> foods = new List<object>();
+        List<object> recipies = new List<object>();
         List<Food> daily = new List<Food>();
         List<double> totals = new List<double>(){
             0, //calories
@@ -48,7 +48,7 @@ class Program
                                 Recipe recipe = new Recipe();
                                 recipe.MakeRecipe(foods);
                                 recipe.CalculateMacros();
-                                recipes.Add(recipe);
+                                recipies.Add(recipe);
                             }
                             loop = false;
                         }else{
@@ -66,7 +66,7 @@ class Program
                         if (int.TryParse(Console.ReadLine(), out choice) && choice > 0 && choice < 3){
                             if (choice == 1){
                                 Console.Clear();
-                                List<Food> found = new List<Food>();
+                                List<object> found = new List<object>();
                                 
                                 while (loop && foods.Count() > 0){
                                     Console.WriteLine("    Enter the list number of what you ate or search within the list");
@@ -82,16 +82,18 @@ class Program
                                     bool isInt = int.TryParse(keyword, out choice);
                                     if (isInt && 0 < choice && choice <= foods.Count()){
                                         if (fromFound){
-                                            found[choice-1].AddFood();
                                             Food food = new Food();
-                                            food.Import(found[choice-1].Export());
+                                            food.Import(((Food)found[choice-1]).Export());
+                                            food.AddFood();
+                                            food.Import(food.Export());
                                             food.name += daily.Count()+1;
                                             daily.Add(food);
                                             
                                         }else{
-                                            foods[choice-1].AddFood();
                                             Food food = new Food();
-                                            food.Import(foods[choice-1].Export());
+                                            food.Import(((Food)foods[choice-1]).Export());
+                                            food.AddFood();
+                                            food.Import(food.Export());
                                             food.name += daily.Count()+1;
                                             daily.Add(food);
                                         }
@@ -113,12 +115,12 @@ class Program
                                 loop = true;
 
                             }else{
-                                List<Food> found = new List<Food>();
-                                while (loop && recipes.Count() > 0){
+                                List<object> found = new List<object>();
+                                while (loop && recipies.Count() > 0){
                                     Console.WriteLine("    Enter the list number of what you ate or search within the list");
                                     bool fromFound = false;
                                     if (found.Count() == 0){
-                                        DisplayFoods(recipes);
+                                        DisplayFoods(recipies);
                                         fromFound = false;
                                     }else{
                                         DisplayFoods(found);
@@ -126,34 +128,35 @@ class Program
                                     }
                                     string keyword = Console.ReadLine();
                                     bool isInt = int.TryParse(keyword, out choice);
-                                    if (isInt && 0 < choice && choice <= recipes.Count()){
+                                    if (isInt && 0 < choice && choice <= recipies.Count()){
                                         if (fromFound){
-                                            found[choice-1].AddFood();
                                             Recipe recipe = new Recipe();
-                                            recipe.Import(found[choice-1].Export());
+                                            recipe.Import(((Recipe)found[choice-1]).Export());
+                                            recipe.CalculateMacros();
+                                            recipe.AddFood();
                                             recipe.name += daily.Count()+1;
                                             daily.Add(recipe);
                                         }else{
-
-                                            recipes[choice-1].AddFood();
                                             Recipe recipe = new Recipe();
-                                            recipe.Import(recipes[choice-1].Export());
+                                            recipe.Import(((Recipe)recipies[choice-1]).Export());
+                                            recipe.CalculateMacros();
+                                            recipe.AddFood();
                                             recipe.name += daily.Count()+1;
                                             daily.Add(recipe);
                                         }
                                         loop = false;
                                     }else if (!isInt){
-                                        found = Search(recipes, keyword);
+                                        found = Search(recipies, keyword);
                                         if (found.Count() == 0){
                                             Console.Clear();
-                                            Console.WriteLine($"\n     No recipes found under the search word {keyword}.");
+                                            Console.WriteLine($"\n     No recipies found under the search word {keyword}.");
                                         }
                                     }else{
                                         Console.WriteLine("Invalid Selection. ");
                                     }
                                 }
-                                if (recipes.Count == 0){
-                                    Console.WriteLine("There are no recipes to report, please add a recipe or load a profile. ");
+                                if (recipies.Count == 0){
+                                    Console.WriteLine("There are no recipies to report, please add a recipe or load a profile. ");
                                     Thread.Sleep(3000);
                                 }else{
                                     Recipe recipe = new Recipe();
@@ -170,8 +173,8 @@ class Program
                     Console.Clear();
                     Console.WriteLine("\nFoods: ");
                     DisplayFoods(foods);
-                    Console.WriteLine("Recipes: ");
-                    DisplayFoods(recipes);
+                    Console.WriteLine("\nRecipes: ");
+                    DisplayFoods(recipies);
                     Console.WriteLine("\n\n");
                 }else if (choice == 4){
                     Console.Clear();
@@ -243,12 +246,12 @@ class Program
                     loop = true;
                     Console.Clear();
                 }else if (choice == 5){
-                    file.Save(diet, foods, recipes);
+                    file.Save(diet, foods, recipies);
                     Console.Clear();
                 }else if (choice == 6){
                     foods.Clear();
                     daily.Clear();
-                    (diet, foods) = file.Load(diet);
+                    (diet, foods, recipies) = file.Load(diet);
                     Console.Clear();
                 }else{
                     loop = false;
@@ -261,7 +264,7 @@ class Program
         }
     }
 
-    public static void DisplayFoods(List<Food> foods){
+    public static void DisplayFoods(List<object> foods){
         int count = 0;
         foreach (Food food in foods){
             count += 1;
@@ -281,12 +284,13 @@ class Program
         return totals;
     }
 
-    public static List<Food> Search(List<Food> list, string keyword){
+    public static List<object> Search(List<object> list, string keyword){
         int index = 0;
-        List<Food> found = new List<Food>();
+        List<object> found = new List<object>();
         while (index < list.Count()){
-            if (list[index].name.ToLower().Contains(keyword.ToLower())){
-                found.Add(list[index]);
+            Food food = (Food)list[index];
+            if (food.name.ToLower().Contains(keyword.ToLower())){
+                found.Add(food);
             }
             index += 1;
         }

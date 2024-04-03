@@ -1,15 +1,15 @@
 using System.Security.Cryptography;
 using System.Xml.Serialization;
 
-public class Recipe: Food{
-    public List<Food> foods = new List<Food>();
+public class Recipe : Food{
+    public List<object> foods = new List<object>();
 
     public override void Import(string import){
-        var lines = import.Split('\n');
+        var lines = import.Split('/');
         foreach (string line in lines){
-            if (line == lines[0]){
+            if (line == lines[1]){
                 this.name = line;
-            }else{
+            }else if (line != lines[0] && line != lines[1]){
                 Food food = new Food();
                 food.Import(line);
                 foods.Add(food);
@@ -17,13 +17,13 @@ public class Recipe: Food{
         }
     }
     public override string Export(){
-        string export = $"{this.GetType().Name}|{this.name}|";
+        string export = $"{this.GetType().Name}/{this.name}";
         foreach (Food food in foods){
-            export += $"{food.Export()}";
+            export += $"/{food.Export()}";
         }
         return export;
     }
-    public void MakeRecipe(List<Food> inventory)
+    public void MakeRecipe(List<object> inventory)
     {
         Console.Write("Name of Recipe: ");
         this.name = Console.ReadLine();
@@ -31,7 +31,7 @@ public class Recipe: Food{
         while (!finished){
             Console.WriteLine("What foods would you like to add to your recipe?");
             Console.WriteLine("Press 'd' when you are done adding foods.");
-            List<Food> found = new List<Food>();
+            List<object> found = new List<object>();
             Console.WriteLine("    Enter the list number of the food");
             if (found.Count() == 0){
                 DisplayFoods(inventory);
@@ -41,7 +41,8 @@ public class Recipe: Food{
             string keyword = Console.ReadLine();
             bool isInt = int.TryParse(keyword, out int choice);
             if (isInt && 0 < choice && choice <= inventory.Count()){
-                inventory[choice-1].AddFood();
+                Food food = (Food)inventory[choice-1];
+                food.AddFood();
                 this.foods.Add(inventory[choice-1]);
                 Console.Clear();
             }else if (!isInt){
@@ -60,11 +61,12 @@ public class Recipe: Food{
             }
         }
     }
-    public static List<Food> Search(List<Food> list, string keyword){
+    public static List<object> Search(List<object> list, string keyword){
         int index = 0;
-        List<Food> found = new List<Food>();
+        List<object> found = new List<object>();
         while (index < list.Count()){
-            if (list[index].name.ToLower().Contains(keyword.ToLower())){
+            Food food  = (Food)list[index];
+            if (food.name.ToLower().Contains(keyword.ToLower())){
                 found.Add(list[index]);
             }
             index += 1;
@@ -72,7 +74,7 @@ public class Recipe: Food{
         return found;
     }
 
-    public static void DisplayFoods(List<Food> foods){
+    public static void DisplayFoods(List<object> foods){
         int count = 0;
         foreach (Food food in foods){
             count += 1;

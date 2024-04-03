@@ -3,7 +3,7 @@
 using System.IO.Enumeration;
 
 public class FileManager{
-    public void Save(Diet diet, List<Food> foods, List<Food>recipes){
+    public void Save(Diet diet, List<object> foods, List<object>recipes){
         Console.WriteLine("What would you like to name the file? ");
         string filename = Console.ReadLine()+".txt";
         using (StreamWriter writer = new StreamWriter(filename))
@@ -17,8 +17,9 @@ public class FileManager{
             }
         }
     }
-    public (Diet, List<Food>) Load(Diet diet){
-        List<Food> foods = new List<Food>();
+    public (Diet, List<object>, List<object>) Load(Diet diet){
+        List<object> foods = new List<object>();
+        List<object> recipes = new List<object>();
         Console.WriteLine("What is the name of the file? ");
         string filename = Console.ReadLine()+".txt";
         string [] lines = System.IO.File.ReadAllLines(filename);
@@ -35,11 +36,19 @@ public class FileManager{
                 }
                 diet.Import(line);
             }else{
-                Food food = new Food();
-                food.Import(line);
-                foods.Add(food);
+                var parts = line.Split('/');
+                if (parts[0] == "Recipe"){
+                    Recipe recipe = new Recipe();
+                    recipe.Import(line);
+                    recipe.CalculateMacros();
+                    recipes.Add(recipe);
+                }else{
+                    Food food = new Food();
+                    food.Import(line);
+                    foods.Add(food);
+                }
             }
         }
-        return (diet, foods);
+        return (diet, foods, recipes);
     }
 }
