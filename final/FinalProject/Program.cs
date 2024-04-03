@@ -156,6 +156,7 @@ class Program
                                     }
                                 }
                                 if (recipies.Count == 0){
+                                    Console.Clear();
                                     Console.WriteLine("There are no recipies to report, please add a recipe or load a profile. ");
                                     Thread.Sleep(3000);
                                 }else{
@@ -171,11 +172,15 @@ class Program
                     loop = true;
                 }else if (choice == 3){
                     Console.Clear();
-                    Console.WriteLine("\nFoods: ");
-                    DisplayFoods(foods);
-                    Console.WriteLine("\nRecipes: ");
-                    DisplayFoods(recipies);
-                    Console.WriteLine("\n\n");
+                    if (foods.Count() > 0 || recipies.Count() > 0){
+                        Console.WriteLine("\nFoods: ");
+                        DisplayFoods(foods);
+                        Console.WriteLine("\nRecipes: ");
+                        DisplayFoods(recipies);
+                        Console.WriteLine("\n\n");
+                    }else{
+                        Console.WriteLine("There are no foods or recipies. Please create a new food or recipe. \n");
+                    }
                 }else if (choice == 4){
                     Console.Clear();
                     while (loop)
