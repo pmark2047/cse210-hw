@@ -7,6 +7,7 @@ class Program
         Diet diet = new Diet();
         FileManager file = new FileManager();
         List<object> foods = new List<object>();
+        file.GetGeneric(foods);
         List<object> recipes = new List<object>();
         List<Food> daily = new List<Food>();
         List<double> totals = new List<double>(){
@@ -22,7 +23,7 @@ class Program
         while (loop){
             diet.CalculateCalories();
             totals = CalculateCalories(daily, totals);
-            Console.WriteLine($"        Total Calories: {totals[0]}/{diet.calories}");
+            Console.WriteLine($"        Total Calories: {Math.Round(totals[0], 1)}/{diet.calories}");
             Console.WriteLine($"Carbs: {Math.Round(totals[1], 1)}/{Math.Round((double)(diet.calories/2)/4, 1)}   Protein: {Math.Round(totals[2], 1)}/{Math.Round((double)(diet.calories/5)/4,1)}   Fat: {Math.Round(totals[3], 1)}/{Math.Round((double)(diet.calories*0.3)/9, 1)}");
             Console.WriteLine("\n   Please select from an option below");
             Console.WriteLine("1.) Add");
@@ -184,7 +185,10 @@ class Program
                         }else{
                             Console.WriteLine("No recipes created");
                         }
-                        Console.WriteLine("\n\n");
+                        Console.WriteLine("\nPress Enter to Return\n");
+                        Console.ReadLine();
+                        Console.Clear();
+                        
                     }else{
                         Console.WriteLine("There are no foods or recipes. Please create a new food or recipe. \n");
                     }
@@ -280,7 +284,7 @@ class Program
         int count = 0;
         foreach (Food food in foods){
             count += 1;
-            Console.WriteLine($"{count}.) {food.name} ({food.caloriesPerServing} cal)");
+            Console.WriteLine($"{count}.) {food.name} ({Math.Round(food.caloriesPerServing, 1)} cal)");
         }
     }
     public static List<double> CalculateCalories(List<Food> daily, List<double> totals){

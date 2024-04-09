@@ -49,6 +49,26 @@ public class FileManager{
                 }
             }
         }
+        filename = "generic.txt";
+        lines = System.IO.File.ReadAllLines(filename);
+        foreach (string line in lines)
+        {
+            var parts = line.Split('/');
+            Food food = new Food();
+            food.Import(line);
+            foods.Add(food);
+        }
         return (diet, foods, recipes);
+    }
+    public List<object> GetGeneric(List<object> foods){
+        string [] lines = System.IO.File.ReadAllLines("generic.txt");
+        foreach (string line in lines)
+        {
+            var parts = line.Split('/');
+            Food food = new Food();
+            food.Import(line);
+            foods.Add(food);
+        }
+        return foods;
     }
 }

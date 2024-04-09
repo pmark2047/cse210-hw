@@ -1,0 +1,14 @@
+White Bread|22|3|0|1
+Wheat Bread|12|3|1|1
+2 Percent Milk (1 cup)|14|10|5|1
+Egg|0.4|6.3|4.8|1
+Orange Juice|26.4|1.6|0|1
+Banana|27|1.3|0.4|1
+Granola Bar|24|2|6|1
+Chicken Nuggets (1oz)|3|5.3|1.7|1
+Chicken Breast (1oz)|0|5.8|1|1
+Ribeye Steak (1oz)|0|7|5.3|1
+Apple|30|0|0|1
+Peanut Butter (1 tbsp)|3|3.5|8|1
+Strawberry Jam (1 tbsp)|13|0|0|1
+Ice Cream - Vanilla (1 cup)|34|5|15.8|1

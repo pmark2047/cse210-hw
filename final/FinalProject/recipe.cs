@@ -28,23 +28,32 @@ public class Recipe : Food{
         Console.Write("Name of Recipe: ");
         this.name = Console.ReadLine();
         bool finished = false;
+        List<object> found = new List<object>();
+        bool fromFound = false;
         while (!finished){
             Console.WriteLine("What foods would you like to add to your recipe?");
             Console.WriteLine("Press 'd' when you are done adding foods.");
-            List<object> found = new List<object>();
             Console.WriteLine("    Enter the list number of the food");
             if (found.Count() == 0){
                 DisplayFoods(inventory);
             }else{
                 DisplayFoods(found);
+                fromFound = true;
             }
             string keyword = Console.ReadLine();
             bool isInt = int.TryParse(keyword, out int choice);
-            if (isInt && 0 < choice && choice <= inventory.Count()){
+            if (isInt && fromFound == false && 0 < choice && choice <= inventory.Count()){
                 Food food = (Food)inventory[choice-1];
                 food.AddFood();
                 this.foods.Add(inventory[choice-1]);
                 Console.Clear();
+            }else if (isInt && fromFound == true && 0 < choice && choice <= found.Count()){
+                Food food = (Food)found[choice-1];
+                food.AddFood();
+                food.Calories();
+                this.foods.Add(found[choice-1]);
+                Console.Clear();
+                found.Clear();
             }else if (!isInt){
                 found = Search(inventory, keyword);
                 if (found.Count() == 0){
